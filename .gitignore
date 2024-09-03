@@ -1,0 +1,71 @@
+# Java 관련
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle 관련
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+**/build/
+**/out/
+
+# IntelliJ IDEA 관련
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea/libraries/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+.idea/modules.xml
+
+# VS Code 관련
+.vscode/
+
+# 로그 파일
+*.log
+
+# 운영 체제별 파일
+.DS_Store
+Thumbs.db
+
+# 환경 설정 파일
+.env
+*.env
+.env.*
+
+# Lombok 관련
+*.lombok
+
+# Maven 관련
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Node.js 관련 (혹시 사용 중이라면)
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# 기타 IDE 및 편집기 설정
+*.swp
+*~.nib
+*.bak
+*.tmp
+*.orig
+*.rej
+*.swo
+
+# 환경별 설정 파일 (예: Spring Profiles)
+application-*.yml
+application-*.properties
