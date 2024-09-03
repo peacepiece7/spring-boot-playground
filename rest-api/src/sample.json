@@ -1,0 +1,12 @@
+{
+  "key" : "value",
+  "array" : [ 10, 20, 30 ],
+  "string_array" : [ "홍", "이", "김" ],
+  "obj_array" : [
+    {"a" : 1},
+    {"a" : 2},
+    {"a" : 3}
+  ],
+  "snake_case" : "이걸 더 많이 사용하는 편",
+  "camelCase" : "이건 잘 안쓴다고 함"
+}

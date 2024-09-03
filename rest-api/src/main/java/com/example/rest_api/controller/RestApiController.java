@@ -1,12 +1,14 @@
 package com.example.rest_api.controller;
 
 import com.example.rest_api.model.BookQueryParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class RestApiController {
@@ -74,6 +76,16 @@ public class RestApiController {
             return "";
         }
     }
+
     
-    // 사칙연산 하나 만들어보기
+    @DeleteMapping(path = {
+            "user/{userName}/delete",
+            "user/{userName}/del" // 설계가 변경되면 보통 주소를 두 개 알려주는 식으로 함 user/v2/{userName}/del 이런식
+    })
+    public String delete(
+        @PathVariable String userName
+    ) {
+        log.info("user-name: {}", userName);
+        return userName;
+    }
 }

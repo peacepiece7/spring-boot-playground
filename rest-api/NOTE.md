@@ -76,3 +76,48 @@ taskkill /f /pid <pid>
 lsof -i :8080
 kill -9 <pid>
 ```
+
+# post api 한글 꺠짐
+
+help -> vm option 또는
+
+ctrl + p, shift + tab x2 -> vm option 검색
+
+-Dfile.encoding=UTF-8
+-Dconsole.encoding=UTF-8
+
+ctrl + sift + w 또는
+ctrl + p -> shift + tab x2 -> restart ide 
+
+# lombok snake_case 응답하기
+
+```java
+@Data // getter setter
+@AllArgsConstructor // all 생성자
+@NoArgsConstructor // 기본 생성자
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)  // 이렇게 추가하면 스네이크_케이스로 응답하게 됨
+public class UserRequest {
+    private String userName;
+    private int userAge;
+    private String email;
+}
+```
+
+# lombok boolean 매칭 안되는 문제
+
+structure(alt + 7)에 보면 setKorean, korean 으로 setter,getter 가 생성되어 매칭이 안되는 문제 발생
+
+reference type Boolean 으로 변경해주면 됨
+```java
+@Data // getter setter
+@AllArgsConstructor // all 생성자
+@NoArgsConstructor // 기본 생성자
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class) // snake_case 변경
+public class UserRequest {
+    private String userName;
+    private int userAge;
+    private String email;
+    private boolean isKorean; // default: false, not matched
+    private Boolean isKorean; // matched
+}
+```
