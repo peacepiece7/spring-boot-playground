@@ -26,7 +26,7 @@ public class ResponseApiController {
         log.info("user: {}", user);
 
         var response =  ResponseEntity // 로직을 처리하다가 예외 발생 시 사용
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.CREATED) 
                 .header("x-custom", "hi")
                 .body(user);
 
