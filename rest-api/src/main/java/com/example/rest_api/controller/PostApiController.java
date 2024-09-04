@@ -29,9 +29,10 @@ public class PostApiController {
      */
     @PostMapping("/user")
     public UserRequest user(
-        @RequestBody UserRequest user
-        ){
+        @RequestBody
+        UserRequest user // 역직렬화
+    ){
         System.out.println("User request: "+user.toString());
-        return user;
+        return user; // 직렬화
     }
 }

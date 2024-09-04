@@ -19,7 +19,7 @@ public class ResponseApiController {
     public UserRequest user(){
         var user = new UserRequest();
         user.setUserName("홍길동");
-        user.setUserAge(20);
+//        user.setUserAge(20);
         user.setEmail("foo@bar.com");
         user.setIs_korean(true);
 

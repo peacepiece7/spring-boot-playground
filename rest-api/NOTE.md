@@ -121,3 +121,201 @@ public class UserRequest {
     private Boolean isKorean; // matched
 }
 ```
+
+## Object Mapper 동작 원리
+
+Jackson, Gson 같은걸로 DTO -> JSON 직렬화, JSON -> DTO 역직렬화를 함
+
+jackson을 사용하면 아래와 같이 역/직렬화가 가능하다.
+
+```java
+@Autowired
+private ObjectMapper objectMapper;
+
+var json = objectMapper.writeValueAsString(user);
+var dto = objectMapper.readValue(json, UserRequest.class);
+```
+
+이는 controller 에서도 동일하게 동작함
+
+```java
+@RestController
+@RequestMapping("/api")
+public class PostController {
+    @PostMapper("/post")
+    public String get(@RequestBody User user){ //  objectMapper.readValue(wjson, UserRequest.class); == JSON.parse(json)
+        return user; // objectMapper.writeValueAsString(user); == JSON.stringify(user)
+    }
+}
+```
+
+즉 Spring에서 자동(암시적)으로 objectMapper를 사용하여 역/직렬화 작업을 해주는 것임
+
+### 직렬화 과정
+
+직렬화 할 때는 toString 메서드를 호출함
+
+즉 toString 메서드를 오버라이드하면 직렬화했을 때 내용을 변경할 수 있음
+
+js의 valueOf, toString 이랑 같음 "[Object object]" 이거 나오는 상황이라고 생각면 됨 
+```java
+
+public class User {
+    // ... 
+    @Override
+    public String toString() {
+        return "foo bar";
+    }
+}
+var json = objectMapper.writeValueAsString(user);
+var dto = objectMapper.readValue(json, UserRequest.class);
+System.out.println("OBJECT MAPPER DTD: "+dto); ;// foo bar
+```
+### 역직렬화 과정
+
+역직렬화는 getter로 가져온다.
+
+```java
+public class User {
+    private String userName;
+    private Integer userAge;
+    private String email;
+    
+    // 선언된 멍멍이가 없어도 가져올 수 있다.
+    public String getDog( ) { 
+        return "bark!";
+    }
+}
+var json = objectMapper.writeValueAsString(user); // { ...., dog : "bark!" }
+```
+
+### 가장 좋은 방법
+
+특별한 요구사항이 없다면 lombok의 애너테이션으로 get/setter, constructor를 만들어두고 예외 사항은
+
+@JsonIgnore, @JsonProperty 애너테이션을 사용하자
+
+```java
+@Data // getter, setter 추가
+@AllArgsConstructor // 파라메터를 전부 받는 생성자 추가
+@NoArgsConstructor // 파라메터를 하나도 안 받는 생성자 추가
+public class User { 
+    // ...
+ @JsonProperty("user_email")
+ private String email;
+ 
+ @JsonIgnore
+ public String getUserName() {
+   return this.userName;
+ }
+}
+```
+
+### Exception
+
+controller에서 발생한 예외를 처리하는데 사용됨 exception 파일안에 클래스를 만들어주면 된다.
+
+#### @RestControllerAdvice
+
+인자로 annotation, class, string(path) 등을 지정해줄 수 있다.
+
+```java
+@RestControllerAdvice(basePackages = "com.example.exceptionTest.controller")
+public class RestApiExceptionHandler {}
+```
+
+#### @ExceptionHandler
+
+예외 처리할 클래스를 바인딩 해준다.
+
+```java
+@ExceptionHandler(value = {NumberFormatException.class})
+public ResponseEntity<Void> numberFormatedException(
+        NumberFormatedException e
+) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+}
+```
+
+#### @Builder
+
+Builder 패턴으로 인스턴스를 생성할 수 있다.
+
+> The builder annotation creates a so-called 'builder' aspect to the class that is annotated
+
+```java
+// model/Api.java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class Api <T> {
+    private String resultCode;
+    private String resultMessage;
+    private T data;
+}
+
+// exception/GlobalExceptionHandler
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Api<Object>> globalException(
+            Exception e
+    ) {
+        var res = Api.builder()
+                .resultCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .resultMessage(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+}
+```
+
+#### @Order (Global Exception)
+
+예외 처리의 우선순위를 결정한다.
+
+> @Order defines the sort order for an annotated component.
+> The value is optional and represents an order value as defined in the Ordered interface. **Lower values have higher priority**
+
+기본값 Integer.MAX_VALUE 이고 값이 적을 수록 우선순위가 높다.
+
+```java
+// exception/RestApiExceptionHandler
+
+// * 우선순위가 global Exception(Integer.MAX_VALUE) 보다 높기떄문에 먼저 실행된다. 여기서 못찾으면 globalException으로 넘어간다.
+@Order (value = 1)
+@Slf4j
+@RestControllerAdvice(basePackages = "com.example.exceptionTest.controller")
+public class RestApiExceptionHandler {
+    @ExceptionHandler(value = {IndexOutOfBoundsException.class})
+    public ResponseEntity<Void> HandleOutOfBoundException(
+            IndexOutOfBoundsException e
+    ) {
+        log.error("@@ IndexOutOfBoundsException: ", e);
+        return ResponseEntity.status(200).build();
+    }
+}
+
+// exception/GlobalExceptionHandler
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(value = {Exception.class}) // Exception 최상위(?) 클래스
+    public ResponseEntity<Api<Object>> globalException(
+            Exception e
+    ) {
+        var res = Api.builder()
+                .resultCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                .resultMessage(HttpStatus.INTERNAL_SERVER_ERROR.name())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
+}
+```
+
+
+
