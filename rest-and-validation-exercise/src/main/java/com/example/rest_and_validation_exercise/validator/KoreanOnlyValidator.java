@@ -18,7 +18,6 @@ public class KoreanOnlyValidator implements ConstraintValidator<KoreanOnly, Stri
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        //
         return Pattern.matches(regexp, value);
     };
 }

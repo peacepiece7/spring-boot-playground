@@ -1,49 +1,79 @@
+# note
 
-# MVC 개발, 애완 동물 진료관리 시스템
+## validation exception 처리하기
 
-## 기능 정의
-
-### MODEL
-1. 고객 정보 Customer ((이름, 전화번호, 동물 이름 -> 복합키), 주소, 종류, 출생년도)
-2. 진료기록 TreatHistory (진료일, 진료내용, 소유주, 동물이름, 주소, 종류, 출생년도)
-
-
-### VIEW
-1. 신규 고객 정보 입력 화면
-2. 진료 기록 저장 화면
-3. 진료 기록 조회 화면
-4. 진료 기록 삭제 화면
-5. 종료 화면
-
-
-### CONTROLLER
-1. 고객 정보 입력 기능
-2. 진료 기록 저장 기능
-3. 진료 기록 조회 기능
-4. 진료 기록 삭제 기능
-5. 프로그램 종료 기능
-
-
-+ 중복 검사 안합니다!
-
-### Solution
-
-MedicalRecord VO
-
-```mermaid
-classDiagram
-    class MedicalController {
-        private List records
-        addMedicalRecord()
-        removeMedicalRecord()
-    }
+response 는 이런 형태를 기본적으로 가지도록 만든다.
+```json
+{
+  "data": {},
+  "status" : "HttpStatus.<CODE>.value()",
+  "message" : "HttpStatus.<CODE>.getReasonPhrase()",
+  "error" : ["요기에 validation 에러 넣기"]
+}
 ```
 
-```mermaid
-classDiagram
-    class ConsoleView {
-        private scanner()
+ResponseEntity 클래스에 에러시 body 에 들어갈 위 JSON 객체를 만드는 클래스 `Api`를 정의한다.
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class Api<T> {
+
+    private String status;
+
+    private String message;
+
+    @Valid
+    private T data;
+
+    private Error error;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class Error {
+        private List<String> errorMessage;
     }
+}
 ```
 
-### API
+ValidationExceptionHandler 를 만든다.
+
+```java
+@Slf4j
+@RestControllerAdvice
+@Order(value = 1)
+public class ValidationExceptionHandler  {
+
+    @ExceptionHandler (value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<Api<? extends Object>> validationException(
+            MethodArgumentNotValidException exception
+    ) {
+        var errorMessageList = exception.getFieldErrors().stream()
+                .map(it -> {
+                    var format = "%s : { %s } 은 %s";
+                    return String.format(format, it.getField(), it.getRejectedValue(), it.getDefaultMessage());
+                }).toList();
+
+        var error = Api.Error
+                .builder()
+                .errorMessage(errorMessageList)
+                .build();
+
+        var errorResponse = Api.builder()
+                .status(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+                .message(String.valueOf(HttpStatus.BAD_REQUEST.getReasonPhrase()))
+                .error(error)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST.value())
+                .body(errorResponse);
+    }
+}
+```
