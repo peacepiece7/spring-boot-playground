@@ -42,7 +42,7 @@ public class UserApiController {
             @PathVariable
             Long id
     ) {
-        var res =  userService.findById(id);
+        var res =  userService.wfindById(id);
         return res.get();
     }
 
