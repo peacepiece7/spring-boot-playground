@@ -24,7 +24,6 @@ abstract public class SimpleDataRepository<T extends Entity, ID extends Long> im
     // create
     @Override
     public T save(T data) {
-
         if(Objects.isNull(data)) {
             throw new RuntimeException("Data is null");
         }
@@ -33,6 +32,7 @@ abstract public class SimpleDataRepository<T extends Entity, ID extends Long> im
                 .filter(it -> it.getId().equals(data.getId()))
                 .findFirst();
 
+        // var prevTData = prevData.get(); => 이런식으로 dataList.remove(prevTData)이캐해야함 Optional 로 감싸있으면 동일한 데이터인지 모름
         prevData.ifPresent(dataList::remove); //  prevData.ifPresent(it -> {dataList.remove(it)});
         if(prevData.isEmpty()) data.setId(index++);
         dataList.add(data);
@@ -42,14 +42,12 @@ abstract public class SimpleDataRepository<T extends Entity, ID extends Long> im
     // read
     @Override
     public Optional<T> findById(ID id) {
-
         return dataList.stream()
                 .filter(it -> it.getId().equals(id))
                 .findFirst();
     };
 
     // write
-
     @Override
     public List<T> findAll() {
         return dataList.stream()

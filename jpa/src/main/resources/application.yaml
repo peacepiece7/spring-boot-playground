@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      format_sql: true
+    hibernate:
+      ddl-auto: update # 이거 validate 으로 해놓으면 db에 테이블 없을 때 에러 터짐
+  datasource:
+    url: jdbc:mysql://localhost:3306/user?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root1234!
