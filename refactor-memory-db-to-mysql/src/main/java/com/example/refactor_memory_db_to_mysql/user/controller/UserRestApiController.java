@@ -3,6 +3,7 @@ package com.example.refactor_memory_db_to_mysql.user.controller;
 
 import com.example.refactor_memory_db_to_mysql.user.db.UserRepository;
 import com.example.refactor_memory_db_to_mysql.user.model.UserEntity;
+import com.example.refactor_memory_db_to_mysql.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRestApiController {
     private final UserRepository userRepository;
+    private final UserService userService;
 
     /**
      * @apiNote 모든 사용자 정보를 가저온다.
@@ -62,4 +64,14 @@ public class UserRestApiController {
     //  ) {
     //      return userRepository.filterAge(age);
     //  }
+
+
+    @GetMapping("/min_max")
+    public List<UserEntity> filterScore(
+            @RequestParam int min,
+            @RequestParam int max
+    ) {
+        return userService.filterScore(min,max);
+    }
+
 }

@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-@Entity(name = "book")
+// @Entity(name = "book")
 public class BookEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
