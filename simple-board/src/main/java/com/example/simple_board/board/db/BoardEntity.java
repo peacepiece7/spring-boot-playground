@@ -26,4 +26,8 @@ public class BoardEntity {
     private String boardName;
 
     private String status;
+
+    @OneToMany(mappedBy = "board")
+    @ToString.Exclude
+    private List<PostEntity> postList = List.of();
 }
