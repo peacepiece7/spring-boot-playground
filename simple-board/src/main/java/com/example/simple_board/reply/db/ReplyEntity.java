@@ -1,5 +1,7 @@
 package com.example.simple_board.reply.db;
 
+import com.example.simple_board.post.db.PostEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
@@ -24,8 +26,13 @@ public class ReplyEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @NotNull
-    private Long postId;
+    // @NotNull
+    // private Long postId;
+
+    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    private PostEntity post;
 
     @NotBlank
     private String userName;

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.*;
 
 import java.util.List;
 
@@ -27,7 +28,13 @@ public class BoardEntity {
 
     private String status;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @Builder.Default
+    // @Where() - deprecated
+    // @Filter(name = "statusFilter", condition = "status = 'REGISTERED'")
+    // @Where(clause = "status = 'REGISTERED'")
+    @SQLOrder(value = "id desc")
     private List<PostEntity> postList = List.of();
+
 }
