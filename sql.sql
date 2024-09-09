@@ -1,5 +1,3 @@
-
-
 drop table user.user;
 
 create schema user;
