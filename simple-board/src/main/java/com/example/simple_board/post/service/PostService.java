@@ -67,7 +67,7 @@ public class PostService {
     }
 
 
-    public Api<List<PostEntity>> all(Pageable1 pageable) {
+    public Api<List<PostEntity>> all(Pageable pageable) {
         var list = postRepository.findAll(pageable);
 
         var pagination = Pagination.builder()
