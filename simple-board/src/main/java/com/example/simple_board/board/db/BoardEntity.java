@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.*;
 
+import java.nio.file.SecureDirectoryStream;
 import java.util.List;
 
 @Getter
@@ -36,5 +37,4 @@ public class BoardEntity {
     // @Where(clause = "status = 'REGISTERED'")
     @SQLOrder(value = "id desc")
     private List<PostEntity> postList = List.of();
-
-}
+};
