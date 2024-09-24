@@ -28,10 +28,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
 
+    // jpa 를 사용하는 곳에서도 추가해줘야함 `somethingRepository.save()` 이런거 할 떄 필요
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Swagger(Spring 3.x.x 이상부터 SpringFox 대신, SpringDoc)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
 }
 
 test {
     useJUnitPlatform()
+
 }

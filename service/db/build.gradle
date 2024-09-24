@@ -23,14 +23,19 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 test {
     useJUnitPlatform()
+}
+
+// db 는 bootJar 없어도 됨 다른 곳에서 Dto 가져와서 쓸거니깐!
+bootJar {
+    enabled = false
+}
+
+// 요거는 있어야함 plain jar 는 있어야 하니께
+jar {
+    enabled = true
 }
