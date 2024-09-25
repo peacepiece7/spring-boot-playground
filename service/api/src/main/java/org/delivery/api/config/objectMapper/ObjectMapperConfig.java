@@ -1,4 +1,4 @@
-package org.delivery.api.config.jpa.objectMapper;
+package org.delivery.api.config.objectMapper;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
