@@ -9,13 +9,13 @@ import org.delivery.db.user.enums.UserStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
 @Getter
 @Setter
 @ToString
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user")
 public class UserEntity extends BaseEntity {
 
     @Column(length = 50, nullable = false)

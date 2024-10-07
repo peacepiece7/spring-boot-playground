@@ -8,11 +8,11 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
-@MappedSuperclass // 직접 테이블에 매핑되지 않지만 해당 필드를 상속받아 쓸수 있음 (createdAt, UpdatedAt, Id 같은 것들에 사용됨)
 @Getter
 @Setter
 @ToString
 @SuperBuilder
+@MappedSuperclass // 직접 테이블에 매핑되지 않지만 해당 필드를 상속받아 쓸수 있음 (createdAt, UpdatedAt, Id 같은 것들에 사용됨)
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseEntity {
@@ -21,3 +21,7 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }
+
+
+
+
