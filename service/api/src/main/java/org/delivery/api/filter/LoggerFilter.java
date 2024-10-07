@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
-
 import java.io.IOException;
 
 @Slf4j
@@ -20,7 +19,7 @@ public class LoggerFilter implements Filter {
         var req = new ContentCachingRequestWrapper( (HttpServletRequest) request );
         var res = new ContentCachingResponseWrapper( (HttpServletResponse) response );
 
-        log.info("INIT URI : {}", req.getRequestURI());
+        log.info("@ LOG INIT URL: {}", req.getRequestURI());
 
         chain.doFilter(req, res);
 
@@ -45,7 +44,8 @@ public class LoggerFilter implements Filter {
         var uri = req.getRequestURI();
         var method = req.getMethod();
 
-        log.info(">>>>> uri : {} , method : {} , header : {} , body : {}", uri, method, headerValues, requestBody);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>\n\n URL : {}\n METHOD : {}\n HEADER : {}\n BODY : {}\n", uri, method, headerValues, requestBody);
+        log.info("<<<<<<<<<<<<<<<<<<<<<<<<\n\n");
 
 
         // response 정보
@@ -64,8 +64,8 @@ public class LoggerFilter implements Filter {
 
         var responseBody = new String(res.getContentAsByteArray());
 
-        log.info("<<<<< uri : {} , method : {} , header : {} , body : {}", uri, method, responseHeaderValues, responseBody);
-
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>\n\n URL : {}\n METHOD : {}\n HEADER : {}\n BODY : {}\n", uri, method, responseHeaderValues, responseBody);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>\n\n");
 
         res.copyBodyToResponse();
     }

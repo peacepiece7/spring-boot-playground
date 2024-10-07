@@ -28,9 +28,7 @@ public class UserConverter {
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT, "UserRegisterRequest Null"));
     }
 
-
     public UserResponse toResponse(UserEntity userEntity) {
-
         return Optional.ofNullable(userEntity)
                 .map(it ->{
                     // to response
@@ -46,7 +44,5 @@ public class UserConverter {
                             .build();
                 })
                 .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT, "UserEntity Null"));
-
-
     }
 }

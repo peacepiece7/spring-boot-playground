@@ -14,9 +14,7 @@ public enum ErrorCode implements ErrorCodeIfs {
 
     SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), 500, "서버에러"),
 
-    NULL_POINT(HttpStatus.INTERNAL_SERVER_ERROR.value(), 512, "Null point")
-
-    ;
+    NULL_POINT(HttpStatus.INTERNAL_SERVER_ERROR.value(), 512, "Null point");
 
     private final Integer httpStatusCode;
     private final Integer errorCode;

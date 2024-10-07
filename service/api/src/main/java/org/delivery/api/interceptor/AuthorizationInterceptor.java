@@ -14,10 +14,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
-
-import javax.naming.AuthenticationException;
 import java.util.Objects;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,9 +25,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Authorization Interceptor url : {}", request.getRequestURI());
+        log.info("@ Authorization Interceptor URL: {}", request.getRequestURI());
 
-        // WEB ,chrome 의 경우 GET, POST OPTIONS = pass
+        // WEB, chrome 의 경우 GET, POST OPTIONS = pass
         if(HttpMethod.OPTIONS.matches(request.getMethod())){
             return true;
         }
@@ -51,6 +48,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             // 한가지 요청에 대해 스레드 로컬에 저장함
             var requestContext = Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
             requestContext.setAttribute("userId", userId, RequestAttributes.SCOPE_REQUEST);
+            return true;
         }
 
         throw new ApiException(ErrorCode.BAD_REQUEST, "인증 실패");

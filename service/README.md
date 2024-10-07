@@ -209,3 +209,46 @@ public class SwaggerConfig {
     }
 }
 ```
+
+
+### HandlerMethodArgumentResolver, HandlerInterceptor, jakarta.servlet.Filter
+
+`HandlerMethodArgumentResolver`, `HandlerInterceptor`, `jakarta.servlet.Filter`\
+세 가지 기능를 사용해봤는데 각각 용도랑 사용되는 위치가 다르가 각각 정리해보자
+
+**`HandlerMethodArgumentResolver`**
+
+위치: Spring MVC 컨트롤러 레벨\ 
+컨트롤러 메서드 파라메터를 자동으로 바인딩 해준다.\
+컨트롤러의 메서드 인자로 데이터를 주입할 수 있다.
+
+에를들어 컨트롤러 인자에 `@UserSession` 커스텀 어노테이션이 있으면 첫 번째 인자로 사용자 정보를 가져와 메서드의 인자로 줄 수 있다.
+```java
+@GetMapping("/me")
+public UserResponse me(
+        @UserSession User user
+) {
+  // ...   
+}
+```
+
+
+**`HandlerInterceptor`**
+
+위치: 스프링 MVC의 디스패처 서블릿 앞뒤\
+스프링 MVC에서 요청이 컨트롤러에 도달하기 전/후에 실행되는 로직을 처리\
+주로 인증/인가, 로깅, 요청 검증 등에 사용됨
+
+
+**`jakarta.servlet.Filter`**
+위치: 서블릿 컨테이너 레벨 (스프링 MVC와는 별개의 서블릿 레이어)
+`HandlerInterceptor`처럼 요청이 컨트롤러로 들어가기 전/후에 실행됨
+
+요청 시 서블릿 컨테이너가 스프링 컨텍스트 보다 앞에 있어서 `HandlerInterceptor` 보다 먼저 실행됨\
+반대로 응답 흐름은 `HandlerInterceptor`가 실행되고 Filter가 실행됨 
+
+Interceptor 에서 인증 인가 처리한다면 그 전에 로깅하거나, cors 나 ip 밴 같은거 먼저 처리해야하면 filter에서 거르면 될 것 같음..!
+
+찾아보니까 보통 Cors, 인코딩, 로깅, 모니터링, 외부 라이브러리 통합 기능은 `Filter`\
+인증/인가, 검증, 통계 수집 기능은 `interceptor` 쓴다고 함
+

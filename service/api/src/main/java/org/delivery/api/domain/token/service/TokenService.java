@@ -1,6 +1,6 @@
 package org.delivery.api.domain.token.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.token.ifs.TokenHelperIfs;
@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Objects;
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 public class TokenService {
     private final TokenHelperIfs tokenHelperIfs;
+
+    public TokenService(TokenHelperIfs tokenHelperIfs) {
+        this.tokenHelperIfs = tokenHelperIfs;
+    }
 
     public TokenDto issueAccessToken(Long userId){
         var data = new HashMap<String, Object>();

@@ -2,9 +2,9 @@ package org.delivery.api.domain.token.helper;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.common.error.TokenErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.token.ifs.TokenHelperIfs;
@@ -19,6 +19,7 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class JwtTokenHelper implements TokenHelperIfs {
 
@@ -96,27 +97,25 @@ public class JwtTokenHelper implements TokenHelperIfs {
         try{
             var result = parser.parse(token);
             var payload = result.getPayload();
+            /*
+            @TODO 파싱하는 과정에서 에러 발생, parseClaimsJws -> deprecated 대체 방법 찾기
 
             var map = new HashMap<String ,Object>();
-
             var fields = payload.getClass().getDeclaredFields();
             for(Field field : fields) {
+                log.info("@FIELD: {} {}",field.getName(),field.get(field.getName()) );
                 field.setAccessible(true);
-                map.put(field.getName(), field.get(payload));
+                map.put(field.getName(), field.get(field.getName()));
             }
-
-            // deprecated
-            // var key = Keys.hmacShaKeyFor(secretKey.getBytes());
-            // var parser = Jwts.parserBuilder()
-            //         .setSigningKey(key)
-            //         .build();
-            // var result = parser.parseClaimsJws(token);
-            // return new HashMap<String, Object>(result.getBody());
-
             return map;
+            */
+            var claims = parser.parseClaimsJws(token).getBody();
+            // 클레임을 Map으로 변환하여 반환
+            Map<String, Object> claimsMap = new HashMap<>(claims);
+
+            return claimsMap;
 
         }catch (Exception e){
-
             if(e instanceof SignatureException){
                 // 토큰이 유효하지 않을때
                 throw new ApiException(TokenErrorCode.INVALID_TOKEN, e);

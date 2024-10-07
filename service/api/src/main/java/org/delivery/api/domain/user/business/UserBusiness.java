@@ -3,6 +3,8 @@ package org.delivery.api.domain.user.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
+import org.delivery.api.domain.token.business.TokenBusiness;
+import org.delivery.api.domain.token.controller.model.TokenResponse;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
@@ -17,6 +19,7 @@ public class UserBusiness {
     private final UserRepository userRepository;
     private final UserService  userService;
     private final UserConverter userConverter;
+    private final TokenBusiness tokenBusiness;
 
     /**
      * 사용자 가업 차리 로직
@@ -38,11 +41,10 @@ public class UserBusiness {
      * 3. token 생성
      * 4. token response
      */
-    public UserResponse login(UserLoginRequest body) {
-        var entity= userService.login(body.getEmail(), body.getPassword());
-        return userConverter.toResponse(entity);
+    public TokenResponse login(UserLoginRequest body) {
+        var userEntity = userService.login(body.getEmail(), body.getPassword());
+        return tokenBusiness.issueToken(userEntity);
     }
-
 
     public UserResponse me(Long userId) {
         var userEntity = userService.getUserWithThrow(userId);
