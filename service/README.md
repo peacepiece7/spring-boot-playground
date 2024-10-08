@@ -9,7 +9,7 @@
 alt + f -> alt + n -> alt + j
 ![img](./imgs/1.png)
 
-새로운 모듈 추가 
+새로운 모듈 추가
 
 service dir -> alt + insert -> Module... click
 
@@ -21,9 +21,10 @@ root settings.gradle 보면 하위 종속성으로 모듈 추가된거 나옴
 
 그리고 똑같이 db 모듈도 만들어줌
 
-db 모듈에 
+db 모듈에
 
 이런 클래스 추가
+
 ```java
 package org.delivery.db;
 
@@ -52,9 +53,10 @@ api 모듈에 db를 의존성으로 추가
 직접 테이블에 매핑되지 않지만 해당 필드를 상속받아 쓸수 있음 (createdAt, UpdatedAt, Id 같은 것들에 사용됨)
 
 ```java
+
 @MappedSuperclass
 public abstract class BaseEntity {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -72,7 +74,7 @@ public class User extends BaseEntity {
 }
 ```
 
-## Using @EqualsAndHashCode for JPA entities is not recommended. It can cause severe performance and memory consumption issues. 
+## Using @EqualsAndHashCode for JPA entities is not recommended. It can cause severe performance and memory consumption issues.
 
 `@EqualsAndHashCode(callSuper = true)` 어노테이션은 Equal, HashCode 오버라이드해준다.
 
@@ -81,6 +83,7 @@ callSuper = true 일 경우 부모 클래스의 속성도 포함된다.
 `@Data`, `@EqualsAndHashCode` 어노테이션 모두 메모리 소비 이슈로 추천하지 않고, 다음 코드처럼 변경하길 권한다.
 
 ```java
+
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
@@ -107,17 +110,19 @@ public class Users {
 
 }
 ```
-[Warnings when using @EqualsAndHashCode for JPA entities](https://youtrack.jetbrains.com/issue/IDEA-279243/Warnings-when-using-EqualsAndHashCode-for-JPA-entities)
 
+[Warnings when using @EqualsAndHashCode for JPA entities](https://youtrack.jetbrains.com/issue/IDEA-279243/Warnings-when-using-EqualsAndHashCode-for-JPA-entities)
 
 ## @SuperBuilder
 
 엔티티를 상속 받을 경우 부모 엔티티의 속성을 쓰고 싶다면 `@SuperBuilder`를 사용해야한다.
 
 ```java
+
 @MappedSuperclass
 @SuperBuilder
-public class BaseEntity {}
+public class BaseEntity {
+}
 
 @Entity
 @Table(name = "account")
@@ -138,12 +143,14 @@ Spring Boot 는 `@SpringBootApplication` 이 있는 패키지와 그 하위 패�
 해결 방법으로 패키지명을 동일하게 바꿔주거나
 
 다음과 같이 설정해줄 수 있다.
+
 ```java
+
 @Configuration
 @EntityScan(basePackages = "org.delivery.db")
 @EnableJpaRepositories(basePackages = "org.delivery.db")
-public class JpaConfig { 
-    
+public class JpaConfig {
+
 }
 ```
 
@@ -190,7 +197,8 @@ mavenRepository SpringDoc 검색
 
 1.8v 까지 나왔는데 강의랑 맞추기 위해 1.7 씀
 
-springDoc 패키지를 build.gradle 설정 파일에 추가 
+springDoc 패키지를 build.gradle 설정 파일에 추가
+
 ```text
 // Swagger(Spring 3.x.x 이상부터 SpringFox 대신, SpringDoc)
 implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
@@ -199,17 +207,17 @@ implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 ### swagger config 설정
 
 ```java
+
 @Configuration
 public class SwaggerConfig {
 
     // ObjectMapperConfig.java에 정의한 objectMapper 메서드가 실행되면 리턴값이 요기 파라메터(objectMapper)로 주어짐
     @Bean
-    public ModelResolver modelResolver (ObjectMapper objectMapper) {
+    public ModelResolver modelResolver(ObjectMapper objectMapper) {
         return new ModelResolver(objectMapper);
     }
 }
 ```
-
 
 ### HandlerMethodArgumentResolver, HandlerInterceptor, jakarta.servlet.Filter
 
@@ -218,20 +226,21 @@ public class SwaggerConfig {
 
 **`HandlerMethodArgumentResolver`**
 
-위치: Spring MVC 컨트롤러 레벨\ 
+위치: Spring MVC 컨트롤러 레벨\
 컨트롤러 메서드 파라메터를 자동으로 바인딩 해준다.\
 컨트롤러의 메서드 인자로 데이터를 주입할 수 있다.
 
 에를들어 컨트롤러 인자에 `@UserSession` 커스텀 어노테이션이 있으면 첫 번째 인자로 사용자 정보를 가져와 메서드의 인자로 줄 수 있다.
+
 ```java
+
 @GetMapping("/me")
 public UserResponse me(
         @UserSession User user
 ) {
-  // ...   
+    // ...   
 }
 ```
-
 
 **`HandlerInterceptor`**
 
@@ -239,16 +248,29 @@ public UserResponse me(
 스프링 MVC에서 요청이 컨트롤러에 도달하기 전/후에 실행되는 로직을 처리\
 주로 인증/인가, 로깅, 요청 검증 등에 사용됨
 
-
 **`jakarta.servlet.Filter`**
 위치: 서블릿 컨테이너 레벨 (스프링 MVC와는 별개의 서블릿 레이어)
 `HandlerInterceptor`처럼 요청이 컨트롤러로 들어가기 전/후에 실행됨
 
 요청 시 서블릿 컨테이너가 스프링 컨텍스트 보다 앞에 있어서 `HandlerInterceptor` 보다 먼저 실행됨\
-반대로 응답 흐름은 `HandlerInterceptor`가 실행되고 Filter가 실행됨 
+반대로 응답 흐름은 `HandlerInterceptor`가 실행되고 Filter가 실행됨
 
 Interceptor 에서 인증 인가 처리한다면 그 전에 로깅하거나, cors 나 ip 밴 같은거 먼저 처리해야하면 filter에서 거르면 될 것 같음..!
 
 찾아보니까 보통 Cors, 인코딩, 로깅, 모니터링, 외부 라이브러리 통합 기능은 `Filter`\
 인증/인가, 검증, 통계 수집 기능은 `interceptor` 쓴다고 함
 
+## IntelliJ formatting
+
+### Formatter 설정
+
+[우테코 코드 포메터](https://github.com/woowacourse/woowacourse-docs/blob/main/styleguide/java/intellij-java-wooteco-style.xml)
+복사
+
+file -> settings -> Editor -> Code Style -> Java 선택
+
+상단 캐밥 아이콘 -> Import Schema -> IntelliJ IDEA code style XML -> 우테코 코드 포메터.xml 파일 가져온거 선택
+
+### Format on Save
+
+Tools -> Action on Save -> Reformat code, Optimize imports 체크

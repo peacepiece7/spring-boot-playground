@@ -1,4 +1,4 @@
-package org.delivery.api.exceptionHandler;
+package org.delivery.api.exceptionhandler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.common.api.Api;
@@ -16,7 +16,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = ApiException.class)
     public ResponseEntity<Api<Object>> apiException(
             ApiException apiException
-    ){
+    ) {
         log.error("", apiException);
 
         var errorCode = apiException.getErrorCodeIfs();

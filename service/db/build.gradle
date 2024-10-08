@@ -18,6 +18,9 @@ repositories {
 }
 
 dependencies {
+    // validation 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     // 요것도 세트
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'

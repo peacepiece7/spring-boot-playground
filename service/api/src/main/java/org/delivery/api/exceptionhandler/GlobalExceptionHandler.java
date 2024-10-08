@@ -1,4 +1,4 @@
-package org.delivery.api.exceptionHandler;
+package org.delivery.api.exceptionhandler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.api.common.api.Api;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<Api<Object>> exception (
+    public ResponseEntity<Api<Object>> exception(
             Exception exception
-    ){
-        log.error("",exception);
+    ) {
+        log.error("", exception);
 
         return ResponseEntity
                 .status(500)
