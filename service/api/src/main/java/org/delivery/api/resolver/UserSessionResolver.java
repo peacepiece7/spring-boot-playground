@@ -15,10 +15,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-
 /**
- * 위치: 스프링 MVC 컨트롤러 레벨
- * 스프링의 컨트롤러 메서드의 파라미터를 자동으로 바인딩해주는 기능을 제공
+ * 위치: 스프링 MVC 컨트롤러 레벨 스프링의 컨트롤러 메서드의 파라미터를 자동으로 바인딩해주는 기능을 제공
  */
 @Slf4j
 @Component
@@ -41,7 +39,8 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         var requestContext = RequestContextHolder.getRequestAttributes();
         var userId = requestContext.getAttribute("userId", RequestAttributes.SCOPE_REQUEST);
         log.info("@ userId : {}", userId.toString());
@@ -49,6 +48,16 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
         var userEntity = userService.getUserWithThrow(Long.parseLong(userId.toString()));
         log.info("@ userEntity : {}", userEntity.toString());
 
-        return userConverter.toResponse(userEntity);
+        return User.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .status(userEntity.getStatus())
+                .password(userEntity.getPassword())
+                .address(userEntity.getAddress())
+                .registeredAt(userEntity.getRegisteredAt())
+                .unregisteredAt(userEntity.getUnregisteredAt())
+                .lastLoginAt(userEntity.getLastLogin())
+                .build();
     }
 }

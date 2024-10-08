@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Api<Object>> exception(
             Exception exception
     ) {
-        log.error("", exception);
+        log.error("@ GLOBAL EXCEPTION: ", exception);
 
         return ResponseEntity
                 .status(500)

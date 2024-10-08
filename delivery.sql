@@ -47,4 +47,44 @@ CREATE TABLE IF NOT EXISTS `delivery`.`store_menu` (
     REFERENCES `delivery`.`store` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `delivery`.`user_order` (
+  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT(32) NOT NULL,
+  `status` VARCHAR(50) NOT NULL,
+  `amount` DECIMAL(11,4) NOT NULL,
+  `ordered_at` DATETIME NULL,
+  `accepted_at` DATETIME NULL,
+  `cooking_started_at` DATETIME NULL,
+  `delivery_started_at` DATETIME NULL,
+  `received_at` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user_order_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_order_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `delivery`.`user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `delivery`.`user_order_menu` (
+  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
+  `user_order_id` BIGINT(32) NOT NULL,
+  `store_menu_id` BIGINT(32) NOT NULL,
+  `status` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user_order_store_menu1_idx` (`store_menu_id` ASC) VISIBLE,
+  INDEX `fk_user_order_menu_user_order1_idx` (`user_order_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_order_store_menu1`
+    FOREIGN KEY (`store_menu_id`)
+    REFERENCES `delivery`.`store_menu` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_order_menu_user_order1`
+    FOREIGN KEY (`user_order_id`)
+    REFERENCES `delivery`.`user_order` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;

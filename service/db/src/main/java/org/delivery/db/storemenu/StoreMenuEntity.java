@@ -5,20 +5,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
-import org.delivery.db.store.enums.StoreStatus;
+import org.delivery.db.storemenu.enums.StoreMenuStatus;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "store_menu")
@@ -34,15 +36,17 @@ public class StoreMenuEntity extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 50, nullable = false)
-    private StoreStatus status;
+
+    private StoreMenuStatus status;
 
     @Column(length = 250, nullable = false)
     private String thumbnailUrl;
 
+    @Builder.Default
     @Column(length = 50, nullable = false)
-    private int likeCount;
+    private int likeCount = 0;
 
+    @Builder.Default
     @Column(nullable = false)
-    @Positive
-    private int sequence;
+    private int sequence = 0;
 }
