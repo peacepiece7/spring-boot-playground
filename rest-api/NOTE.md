@@ -105,7 +105,10 @@ public class UserRequest {
 
 # lombok boolean 매칭 안되는 문제
 
-structure(alt + 7)에 보면 setKorean, korean 으로 setter,getter 가 생성되어 매칭이 안되는 문제 발생
+
+자바에서 기본형 boolean 필드의 경우, getter 이름은 `is~`로 시작해서 `isKorean`이 되어야함
+
+하지만 structure(alt + 7)에 보면 `setKorean`, `korean`으로 setter, getter 가 생성되어 매칭이 안되는 문제 발생
 
 reference type Boolean 으로 변경해주면 됨
 ```java
