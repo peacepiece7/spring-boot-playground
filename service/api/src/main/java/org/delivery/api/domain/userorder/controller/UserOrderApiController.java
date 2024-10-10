@@ -78,7 +78,7 @@ public class UserOrderApiController {
 
     // 주문 1건에 대한 내역
     @GetMapping("get/{orderId}")
-    public UserOrderDetailResponse read(
+    public Api<UserOrderDetailResponse> read(
             @Parameter(hidden = true)
             @UserSession
             User user,
@@ -86,6 +86,6 @@ public class UserOrderApiController {
             Long orderId
     ) {
         var response = userOrderBusiness.read(user, orderId);
+        return Api.OK(response);
     }
-
 }

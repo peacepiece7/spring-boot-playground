@@ -53,13 +53,13 @@ public class UserOrderService {
         return getUserOrderList(
                 userId,
                 List.of(
-                        UserOrderStatus.ACCEPT
+                        UserOrderStatus.RECEIVE
                 )
         );
     }
 
-    // 한 개의 주무 내역 조회
+    // 한 개의 주문 내역 조회
     public UserOrderEntity read(Long orderId, Long userId) {
-        return userOrderRepository.findByIdAndUserId(orderId);
+        return userOrderRepository.findByIdAndUserId(orderId, userId);
     }
 }

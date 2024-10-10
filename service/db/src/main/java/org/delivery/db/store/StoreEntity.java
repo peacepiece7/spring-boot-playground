@@ -26,8 +26,6 @@ import org.delivery.db.store.enums.StoreStatus;
 @Table(name = "store")
 public class StoreEntity extends BaseEntity {
 
-    private Long storeId;
-
     @Column(length = 50, nullable = false)
     private String name;
 
