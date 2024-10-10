@@ -29,11 +29,19 @@ public class StoreMenuService {
         return entity.orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
     }
 
-    public List<StoreMenuEntity> getStoreMenuListByIdIn(List<Long> ids) {
+    public StoreMenuEntity getStoreMenuByStoreId(Long storeId) {
+        var entity = storeMenuRepository.findFirstByStoreIdAndStatusOrderByIdDesc(storeId, StoreMenuStatus.REGISTERED);
+        return entity.orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
+    }
+
+    // 스토머 메뉴를 검색할 때 사용한다. M : 1
+    public List<StoreMenuEntity> getStoreMenuListByStoreId(Long storeId) {
+        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatus.REGISTERED);
+    }
+
+    // 스토머 메뉴를 검색할 때 사용한다. N : M (이게 필요할지 고민해보자)
+    public List<StoreMenuEntity> getStoreMenuListByStoreIds(List<Long> ids) {
         return storeMenuRepository.findByIdIn(ids);
     }
 
-    public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId) {
-        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatus.REGISTERED);
-    }
 }

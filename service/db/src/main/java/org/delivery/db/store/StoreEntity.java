@@ -1,14 +1,20 @@
 package org.delivery.db.store;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.store.enums.StoreCategory;
 import org.delivery.db.store.enums.StoreStatus;
-
-import java.math.BigDecimal;
-
 
 @Entity
 @Getter
@@ -19,6 +25,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Table(name = "store")
 public class StoreEntity extends BaseEntity {
+
+    private Long storeId;
 
     @Column(length = 50, nullable = false)
     private String name;

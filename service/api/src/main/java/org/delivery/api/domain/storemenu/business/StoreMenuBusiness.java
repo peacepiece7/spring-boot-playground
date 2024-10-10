@@ -22,7 +22,7 @@ public class StoreMenuBusiness {
     }
 
     public List<StoreMenuResponse> search(Long storeId) {
-        var list = storeMenuService.getStoreMenuByStoreId(storeId);
+        var list = storeMenuService.getStoreMenuListByStoreId(storeId);
         return list.stream()
                 .map(storeMenuConverter::toResponse)
                 .toList();
