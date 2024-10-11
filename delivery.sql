@@ -88,3 +88,25 @@ CREATE TABLE IF NOT EXISTS `delivery`.`user_order_menu` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `delivery`.`store_user` (
+  `id` BIGINT(32) NOT NULL,
+  `store_id` BIGINT(32) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
+  `role` VARCHAR(50) NOT NULL,
+  `status` VARCHAR(50) NOT NULL,
+  `registered_at` DATETIME NULL,
+  `unregistered_at` DATETIME NULL,
+  `last_login_at` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_store_user_store1_idx` (`store_id` ASC) VISIBLE
+  --   CONSTRAINT `fk_store_user_store1`
+  --     FOREIGN KEY (`store_id`)
+  --     REFERENCES `delivery`.`store` (`id`)
+  --     ON DELETE NO ACTION
+  --     ON UPDATE NO ACTION
+  )
+  ENGINE = InnoDB;
+

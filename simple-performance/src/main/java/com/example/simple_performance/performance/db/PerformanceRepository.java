@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PerformanceRepository extends JpaRepository<PerformanceEntity, Long> {
-
     @Query("SELECT p FROM performance p WHERE " +
             "(:title IS NULL OR p.title LIKE %:title%) AND " +
             "(:genre IS NULL OR p.genre LIKE %:genre%) AND " +

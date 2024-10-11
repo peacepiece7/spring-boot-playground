@@ -16,6 +16,18 @@ Aspect Oriented Programming\
 
 [Source code](./cookie/src/main/java/com/example/cookie/controller/UserApiController.java)
 
+### Session
+
+`HttpSession`를 사용하여 구현
+
+[Session note](./session/note.md)\
+[Source code](./session/src/main/java/com/example/session/controller/UserApiController.java)
+
+### JWT
+
+[jwt note](./jwt-security/note.md)\
+[Source code](./service-api/api/src/main/java/org/delivery/api)
+
 ### Docker-compose
 
 docker-compose.yml 파일 작성\
@@ -33,7 +45,7 @@ Interceptor, CORS, resource handler 역할을 수행한다.
 [Authorization interceptor](./service-api/api/src/main/java/org/delivery/api/config/web/WebConfig.java)
 
 
-### Interceptor, Filter, Resolver
+### Middleware(Interceptor, Filter, Resolver)
 
 `HandlerMethodArgumentResolver`, `HandlerInterceptor`, `jakarta.servlet.Filter`\
 라는 이름으로 문서를 작생했다.\
@@ -59,7 +71,6 @@ gradle.build 에서 의존성 주입\
 
 ### Annotation customizing
 
-
 annotation 생성\
 경우에 따라서 추가로 validator 생성할 수 있다.
 
@@ -67,7 +78,6 @@ case 1) annotation & validator
 
 [Password annotation](./yearly-idol-back/src/main/java/com/yearly/idol/api/yearly_idol/Common/annotation/Password.java)\
 [Password annotation validator](./yearly-idol-back/src/main/java/com/yearly/idol/api/yearly_idol/Common/validator/PasswordValidator.java)
-
 
 [Korean Only](./validation/src/main/java/com/example/validation/annotation/KoreanOnly.java)\
 [Korean Only](./validation/src/main/java/com/example/validation/validator/KoreanOnlyValidator.java)
@@ -80,7 +90,6 @@ case 2) spring bean annotation
 [Business annotation](./service-api/api/src/main/java/org/delivery/api/common/annotation/Business.java)\
 [Convertor annotation](./service-api/api/src/main/java/org/delivery/api/common/annotation/Converter.java)
 
-
 case 3) session annotation
 
 이게 쪼금 복잡하다.\
@@ -89,7 +98,7 @@ interceptor -> resolver -> controller
 
 자세히 보면 다음과 같다.
 
-**- annotation**
+- annotation
   - 어노테이션 선언
   - [user session data annotation](./service-api/api/src/main/java/org/delivery/api/common/annotation/UserSession.java)
 - interceptor
@@ -117,8 +126,6 @@ interceptor -> resolver -> controller
 [Object mapper](./service-api/api/src/main/java/org/delivery/api/config/objectMapper/ObjectMapperConfig.java)\
 [Object mapper note](./service-api/README.md)
 
-
-
 ### 예외 처리 패턴
 
 세가지 케이스를 봤는데 1, 2 번 케이스를 같이 사용하면 좋을 것 같다.
@@ -129,10 +136,18 @@ enum `ErrorStatus`와 GlobalExceptionHandler, ApiExceptionHandler 제공\
 
 case 2)\
 `@Validation` 에러시 Exception 에러를 자세히 알려주는 프론트 친화적 패턴\
-[reference](./yearly-idol-back)
+[reference1](./yearly-idol-back)\
+[reference2](./rest-and-validation-exercise/note.md)
 
 case 3)\
 case 1 + 도메인 별로 exception 설정
 
 case 4)\
 `ResponseEntity`를 컨트롤러에서 바로 내리고 ExceptionHandler 에서 모두 처리
+
+### JPA SQL 직접 작성하기
+
+repository layer에 작성한다.\
+business layer가 없거나 쿼리 성능의 문제가 있다면 사용할 수 있다.
+
+[Source code](./simple-performance/src/main/java/com/example/simple_performance/performance/db/PerformanceRepository.java)
