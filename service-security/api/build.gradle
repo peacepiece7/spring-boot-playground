@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'org.delivery'
+version = '1.0-SNAPSHOT'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":db")
+
+    // 요고가 세트
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // 요것도 세트
+    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+
+    // jpa 를 사용하는 곳에서도 추가해줘야함 `somethingRepository.save()` 이런거 할 떄 필요
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // Swagger(Spring 3.x.x 이상부터 SpringFox 대신, SpringDoc)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    // JWT https://github.com/jwtk/jjwt?tab=readme-ov-file#gradle
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+}
+
+test {
+    useJUnitPlatform()
+
+}
