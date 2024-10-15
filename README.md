@@ -151,3 +151,24 @@ repository layer에 작성한다.\
 business layer가 없거나 쿼리 성능의 문제가 있다면 사용할 수 있다.
 
 [Source code](./simple-performance/src/main/java/com/example/simple_performance/performance/db/PerformanceRepository.java)
+
+
+### Spring security
+
+보안과 관련된 다양한 기능을 제공한다.\
+내용이 상당히 방대하다.
+
+[Source code](./service-security/store-admin/src/main/java/org/delivery/storeadmin/StoreAdminApplication.java)
+
+### rabbitMq
+
+메시지 브로커 기느을 제공하는 소프트웨어이다.\
+비동기 통신에 사용되었다.
+
+[note](./service-security-message/note.md)\
+[Source code](./service-security-message/api/src/main/java/org/delivery/api/ApiApplication.java)
+
+### SSE
+
+단방향 통신에 사용된다.\
+관련 기능을 브라우저와 스프링 부트에서 기본 제공한다.
