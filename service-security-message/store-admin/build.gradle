@@ -19,10 +19,14 @@ repositories {
 
 dependencies {
     implementation project(":db")
+    implementation project(":common")
 
     // string boot starter
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // rabbitmq
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
     // lombok
     annotationProcessor 'org.projectlombok:lombok'
