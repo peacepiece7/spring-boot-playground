@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `delivery`.`store_user` (
-  `id` BIGINT(32) NOT NULL,
+  `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
   `store_id` BIGINT(32) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `password` VARCHAR(100) NOT NULL,

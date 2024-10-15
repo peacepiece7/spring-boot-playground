@@ -1,4 +1,4 @@
-package org.delivery.storeadmin.config;
+package org.delivery.storeadmin.config.security;
 
 import java.util.List;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -7,11 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class JpaConfig {
+public class SecurityConfig {
 
     private List<String> SWAGGER = List.of(
             "/swagger-ui/index.html",
@@ -37,7 +39,10 @@ public class JpaConfig {
                         // swagger 인증 없이 통과
                         .requestMatchers(SWAGGER.toArray(new String[0]))
                         .permitAll()
-
+                        // open-api / ** 하위 모든 주소는 인증 없이 통과
+                        .requestMatchers(
+                                "/open-api/**"
+                        ).permitAll()
                         // 그 외 모든 요청은 인증 사용
                         .anyRequest().authenticated());
 
@@ -45,6 +50,13 @@ public class JpaConfig {
         httpSecurity.formLogin(AbstractAuthenticationFilterConfigurer::permitAll);
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+
+        // hash 암호화
+        return new BCryptPasswordEncoder();
     }
 
 }
