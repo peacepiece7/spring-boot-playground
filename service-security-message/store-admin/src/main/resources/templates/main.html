@@ -19,4 +19,17 @@
     </li>
 </ul>
 </body>
+
+<script>
+    const url = "http://localhost:8081/api/sse/connect";
+    const eventSource = new EventSource(url);
+
+    eventSource.onopen = event => {
+      console.log("SEE CONNECTION: " + event.data);
+    };
+
+    eventSource.onmessage = event => {
+      console.log("receive data: " + event.data);
+    };
+</script>
 </html>
