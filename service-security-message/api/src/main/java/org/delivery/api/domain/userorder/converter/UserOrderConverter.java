@@ -1,18 +1,20 @@
 package org.delivery.api.domain.userorder.converter;
 
-import java.math.BigDecimal;
-import java.util.List;
 import org.delivery.api.common.annotation.Converter;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.userorder.controller.model.UserOrderResponse;
 import org.delivery.db.storemenu.StoreMenuEntity;
 import org.delivery.db.userorder.UserOrderEntity;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Converter
 public class UserOrderConverter {
     public UserOrderEntity toEntity(
             User user,
-            List<StoreMenuEntity> storeMenuEntityList
+            List<StoreMenuEntity> storeMenuEntityList,
+            Long storeId
     ) {
         var totalAmount = storeMenuEntityList.stream()
                 .map(StoreMenuEntity::getAmount)
@@ -20,9 +22,9 @@ public class UserOrderConverter {
 
         return UserOrderEntity.builder()
                 .userId(user.getId())
+                .storeId(storeId)
                 .amount(totalAmount)
-                .build()
-                ;
+                .build();
     }
 
     public UserOrderResponse toResponse(

@@ -41,10 +41,11 @@ public class UserOrderBusiness {
             UserOrderRequest request
     ) {
         var menuIds = request.getStoreMenuIdList();
+        var storeId = request.getStoreId();
         var storeMenuEntityList = storeMenuService.getStoreMenuListByStoreIds(menuIds);
 
         // 주문
-        var userOrderEntity = userOrderConverter.toEntity(user, storeMenuEntityList);
+        var userOrderEntity = userOrderConverter.toEntity(user, storeMenuEntityList, storeId); // 스토어 아이디는?
         var newUserOrderEntity = userOrderService.order(userOrderEntity);
 
         // 맵핑
