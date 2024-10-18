@@ -1,4 +1,4 @@
-package exam10_extend_function;
+package ex10_extend_function;
 
 import java.util.Optional;
 
