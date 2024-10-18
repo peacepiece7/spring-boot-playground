@@ -53,12 +53,11 @@ public class UserOrderBusiness {
 
         // 스토어 메뉴 찾기
         var storeMenuResponseList = userOrderMenuList.stream()
-                .map(this::getStoreMenuList)
+                .map(it -> storeMenuService.getStoreMenuWithThrow(it.getStoreMenuId()))
                 .map(storeMenuConverter::toResponse)
                 .toList();
 
-        // @TODO: 주문한 메뉴만 필터링 해야하는것 아닌가?
-
+        // @TODO: queue 에서 꺼낸 데이터 전송 실패시, 전송에 실패한 데이터만 모아두는 queue 가 따로 있어야 할 것 같음..!
         var userOrderResponse = userOrderConverter.toResponse(userOrderEntity);
 
         var userOrderDetailMessage = UserOrderDetailResponse.builder()

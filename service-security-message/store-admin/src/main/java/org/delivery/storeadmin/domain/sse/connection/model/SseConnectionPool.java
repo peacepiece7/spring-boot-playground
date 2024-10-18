@@ -15,8 +15,8 @@ public class SseConnectionPool implements ConnectionPoolIfs<String, UserSseConne
     private static final Map<String, UserSseConnection> connectionPool = new ConcurrentHashMap<>();
 
     @Override
-    public void addSession(String uniquekey, UserSseConnection session) {
-        connectionPool.put(uniquekey, session);
+    public void addSession(String uniqueKey, UserSseConnection session) {
+        connectionPool.put(uniqueKey, session);
     }
 
     @Override

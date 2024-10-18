@@ -86,3 +86,5 @@ localhost:15672로 가서 Queues and Streams 탭으로 넘어가면 메시지가
 `@ModelAttribute`: 요청 파라미터를 객체로 변환할 때 사용 (폼 데이터).\
 `@RequestPart`: Multipart 요청의 특정 파트를 받을 때 사용.\
 `@SessionAttribute`: 세션에 저장된 데이터를 사용할 때 사용.
+
+[retry 전략과 rabbitmq 관련 포스팅](https://minholee93.tistory.com/category/RabbitMQ) 
