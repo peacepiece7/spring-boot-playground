@@ -1,6 +1,7 @@
 package org.delivery.storeadmin.domain.userorder.business;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.delivery.common.message.model.UserOrderMessage;
 import org.delivery.db.storemenu.StoreMenuEntity;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
@@ -13,6 +14,7 @@ import org.delivery.storeadmin.domain.userorder.service.UserOrderService;
 import org.delivery.storeadmin.domain.userordermenu.service.UserOrderMenuService;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserOrderBusiness {
@@ -66,7 +68,13 @@ public class UserOrderBusiness {
                 .build();
 
         // 연결된 세션 찾기
-        var userConnection = sseConnectionPool.getSession(userOrderEntity.getUserId().toString());
+        log.info("CONNECTED SESSION: {}", sseConnectionPool.getAllSessions());
+        var userConnection = sseConnectionPool.getSession(userOrderEntity.getStoreId().toString());
+
+        if(userConnection == null) {
+            log.info("userOrderEntity: {}", userOrderEntity);
+            throw new RuntimeException("연결된 세션정보가 없습니다.");
+        }
 
         // 메시지 전송
         userConnection.sendMessage(userOrderDetailMessage);

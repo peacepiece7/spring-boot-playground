@@ -25,7 +25,7 @@
     const eventSource = new EventSource(url);
 
     eventSource.onopen = event => {
-      console.log("SEE CONNECTION: " + event);
+      console.log("SEE CONNECTION: " + JSON.stringify(event));
     };
 
     eventSource.onmessage = event => {

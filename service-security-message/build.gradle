@@ -4,6 +4,13 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
+// Specify Java 17
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 // service 하위 모든 저장소는 maven 을 쓰겠다
 allprojects {
     repositories {

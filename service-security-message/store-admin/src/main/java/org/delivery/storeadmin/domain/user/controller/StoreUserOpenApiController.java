@@ -6,10 +6,7 @@ import org.delivery.storeadmin.domain.user.business.StoreUserBusiness;
 import org.delivery.storeadmin.domain.user.controller.model.StoreUserRegisterRequest;
 import org.delivery.storeadmin.domain.user.controller.model.StoreUserResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class StoreUserOpenApiController {
 
     private final StoreUserBusiness storeUserBusiness;
+
+    @GetMapping("")
+    public ResponseEntity<String> hi() {
+        return ResponseEntity.ok().body("Hello, open api");
+    }
 
     @PostMapping("")
     public ResponseEntity<StoreUserResponse> register(

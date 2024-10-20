@@ -9,3 +9,6 @@ public class StoreAdminApplication {
         SpringApplication.run(StoreAdminApplication.class, args);
     }
 }
+/**
+ * "if Java had true garbage collection, most programs would delete themselves upon execution"
+ */

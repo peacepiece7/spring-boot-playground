@@ -3,9 +3,12 @@ package org.delivery.storeadmin.domain.userorder.consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.common.message.model.UserOrderMessage;
+import org.delivery.storeadmin.domain.sse.model.UserSseConnection;
 import org.delivery.storeadmin.domain.userorder.business.UserOrderBusiness;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Slf4j
 @Component
@@ -18,10 +21,14 @@ public class UserOrderConsumer {
     public void userOrderConsumer(
             UserOrderMessage userOrderMessage
     ) {
-        log.info("🐇(RabbitMq)🐇 userOrderMessage: {}", userOrderMessage);
+        try{
+            log.info("🐇(RabbitMq)🐇 userOrderMessage: {}", userOrderMessage);
 
-        if (userOrderMessage.getUserOrderId() == null) throw new RuntimeException("주문 정보를 찾을 수 없습니다.");
+            if (userOrderMessage.getUserOrderId() == null) throw new RuntimeException("주문 정보를 찾을 수 없습니다.");
 
-        userOrderBusiness.pushUserOrder(userOrderMessage);
+            userOrderBusiness.pushUserOrder(userOrderMessage);
+        }catch(RuntimeException error) {
+            log.error("🐇(RabbitMq)🐇 런타임 예외 발생! Error: {}", error.getMessage(), error);
+        }
     }
 }
