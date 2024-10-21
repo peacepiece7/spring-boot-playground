@@ -69,17 +69,16 @@ test {
 
 // 요기서 부터 코틀린 추가
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll '-Xjsr305=strict'
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
-allOpen {
-    annotation 'jakarta.persistence.Entity'
-    annotation 'jakarta.persistence.MappedSuperclass'
-    annotation 'jakarta.persistence.Embeddable'
-}
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/main/kotlin']
+        }
+    }
+}
