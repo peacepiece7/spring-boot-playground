@@ -8,3 +8,6 @@ spring initializer 코틀린 설정 한걸로 gradle.build 파일 만들고, 복
 
 spring이 포함된다면 spring-common 모듈을 따로 만들어주는 것이 제일 좋음
 
+# 코틀린은 다음에..!
+
+일단 자바만 하자
