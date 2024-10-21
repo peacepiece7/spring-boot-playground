@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="kor" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>MAIN PAGE</h1>
+<ul>
+    <li>
+        <p th:text="${storeName}"></p>
+    </li>
+    <li>
+        <p th:text="${role}"></p>
+    </li>
+    <li>
+        <p th:text="${email}"></p>
+    </li>
+</ul>
+</body>
+
+<script>
+    const url = "http://localhost:8081/api/sse/connect";
+    const eventSource = new EventSource(url);
+
+    eventSource.onopen = event => {
+      console.log("SEE CONNECTION: " + JSON.stringify(event));
+    };
+
+    eventSource.onmessage = event => {
+      console.log("receive data: " + event.data);
+    };
+
+    // 'test'라는 이름의 이벤트 처리
+    eventSource.addEventListener('test', event => {
+      console.log("receive test data: " + event.data);
+    });
+</script>
+</html>
