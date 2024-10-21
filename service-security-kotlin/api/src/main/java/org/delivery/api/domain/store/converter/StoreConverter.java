@@ -1,12 +1,12 @@
 package org.delivery.api.domain.store.converter;
 
-import java.util.Optional;
-import org.delivery.api.common.annotation.Converter;
-import org.delivery.api.common.error.ErrorCode;
-import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
+import org.delivery.common.annotation.Converter;
+import org.delivery.common.exception.ApiException;
 import org.delivery.db.store.StoreEntity;
+
+import java.util.Optional;
 
 @Converter
 public class StoreConverter {
@@ -24,7 +24,7 @@ public class StoreConverter {
                         .thumbnailUrl(request.getThumbnailUrl())
                         .phoneNumber(request.getPhoneNumber())
                         .build())
-                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
+                .orElseThrow(() -> new ApiException(org.delivery.common.error.ErrorCode.NULL_POINT));
     }
 
     public StoreResponse toResponse(
@@ -43,6 +43,6 @@ public class StoreConverter {
                         .phoneNumber(entity.getPhoneNumber())
                         .star(entity.getStar())
                         .build())
-                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT));
+                .orElseThrow(() -> new ApiException(org.delivery.common.error.ErrorCode.NULL_POINT));
     }
 }

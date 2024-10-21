@@ -50,6 +50,11 @@ dependencies {
     // spring security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // 코틀린 추가
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin' // object mapper
+    implementation 'org.jetbrains.kotlin:kotlin-reflect' // kotlin reflect
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
 }
 
 test {

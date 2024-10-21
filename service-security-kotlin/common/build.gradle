@@ -2,6 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
+
+    // 코틀린 설정
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.spring'
+    id 'org.jetbrains.kotlin.plugin.jpa'
 }
 
 group = 'org.delivery'
@@ -18,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    // validation 추가
+    // validation 추가 (common 내에서 스프링 안쓸거라 다 필요없는데 일일이 찾기 귀찮아서 걍 다 가져옴)
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // 요것도 세트
@@ -33,10 +38,19 @@ test {
     useJUnitPlatform()
 }
 
-bootJar {
-    enabled false
+
+// 요기서 부터 코틀린 추가
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
-jar {
-    enabled false
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/main/kotlin']
+        }
+    }
 }

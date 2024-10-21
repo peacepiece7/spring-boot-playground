@@ -5,14 +5,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
-import org.delivery.api.common.error.TokenErrorCode;
-import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.token.ifs.TokenHelperIfs;
 import org.delivery.api.domain.token.model.TokenDto;
-import org.springframework.beans.factory.annotation.Value; // lombok value 아님..!
+import org.delivery.common.error.TokenErrorCode;
+import org.delivery.common.exception.ApiException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -76,8 +75,8 @@ public class JwtTokenHelper implements TokenHelperIfs {
                 .signWith(key)
                 .expiration(expiredAt)
                 .compact();
-                // deprecated
-                // .signWith(key, SignatureAlgorithm.HS256)
+        // deprecated
+        // .signWith(key, SignatureAlgorithm.HS256)
 
         return TokenDto.builder()
                 .token(jwtToken)
@@ -92,9 +91,9 @@ public class JwtTokenHelper implements TokenHelperIfs {
         var parser = Jwts.parser()
                 .verifyWith(key)
                 .build();
-                // deprecated .setSigningWithKey(key)
+        // deprecated .setSigningWithKey(key)
 
-        try{
+        try {
             var result = parser.parse(token);
             var payload = result.getPayload();
             /*
@@ -115,16 +114,14 @@ public class JwtTokenHelper implements TokenHelperIfs {
 
             return claimsMap;
 
-        }catch (Exception e){
-            if(e instanceof SignatureException){
+        } catch (Exception e) {
+            if (e instanceof SignatureException) {
                 // 토큰이 유효하지 않을때
                 throw new ApiException(TokenErrorCode.INVALID_TOKEN, e);
-            }
-            else if(e instanceof ExpiredJwtException){
+            } else if (e instanceof ExpiredJwtException) {
                 //  만료된 토큰
                 throw new ApiException(TokenErrorCode.EXPIRED_TOKEN, e);
-            }
-            else{
+            } else {
                 // 그외 에러
                 throw new ApiException(TokenErrorCode.TOKEN_EXCEPTION, e);
             }

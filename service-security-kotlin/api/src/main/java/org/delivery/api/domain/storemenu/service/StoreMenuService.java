@@ -1,8 +1,8 @@
 package org.delivery.api.domain.storemenu.service;
 
 import lombok.RequiredArgsConstructor;
-import org.delivery.api.common.error.ErrorCode;
-import org.delivery.api.common.exception.ApiException;
+import org.delivery.common.error.ErrorCode;
+import org.delivery.common.exception.ApiException;
 import org.delivery.db.storemenu.StoreMenuEntity;
 import org.delivery.db.storemenu.StoreMenuRepository;
 import org.delivery.db.storemenu.enums.StoreMenuStatus;
@@ -26,13 +26,13 @@ public class StoreMenuService {
     }
 
     public StoreMenuEntity getStoreMenuWithThrow(Long id) {
-        var entity = storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatus.REGISTERED);
-        return entity.orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
+        var storeMenuEntity = storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatus.REGISTERED);
+        return Optional.ofNullable(storeMenuEntity).orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
     }
 
     public StoreMenuEntity getStoreMenuByStoreId(Long storeId) {
-        var entity = storeMenuRepository.findFirstByStoreIdAndStatusOrderByIdDesc(storeId, StoreMenuStatus.REGISTERED);
-        return entity.orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
+        var storeMenuEntity = storeMenuRepository.findFirstByStoreIdAndStatusOrderByIdDesc(storeId, StoreMenuStatus.REGISTERED);
+        return Optional.ofNullable(storeMenuEntity).orElseThrow(() -> new ApiException((ErrorCode.NULL_POINT)));
     }
 
     // 스토머 메뉴를 검색할 때 사용한다. M : 1

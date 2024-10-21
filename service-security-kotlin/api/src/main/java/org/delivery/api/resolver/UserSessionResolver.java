@@ -2,10 +2,10 @@ package org.delivery.api.resolver;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.delivery.api.common.annotation.UserSession;
 import org.delivery.api.domain.user.converter.UserConverter;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.user.service.UserService;
+import org.delivery.common.annotation.UserSession;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;

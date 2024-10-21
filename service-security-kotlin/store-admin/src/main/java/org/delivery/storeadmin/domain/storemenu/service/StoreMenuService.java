@@ -13,8 +13,7 @@ public class StoreMenuService {
 
 
     public StoreMenuEntity getStoreMenuWithThrow(Long storeMenuId) {
-        return storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(storeMenuId, StoreMenuStatus.REGISTERED)
-                .orElseThrow(() -> new RuntimeException("Store menu not found"));
+        return storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(storeMenuId, StoreMenuStatus.REGISTERED);
     }
 
 }

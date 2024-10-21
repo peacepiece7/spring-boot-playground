@@ -1,13 +1,12 @@
 package org.delivery.api.domain.user.converter;
 
 import lombok.RequiredArgsConstructor;
-import org.delivery.api.common.annotation.Converter;
-import org.delivery.api.common.error.ErrorCode;
-import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
+import org.delivery.common.annotation.Converter;
+import org.delivery.common.error.ErrorCode;
+import org.delivery.common.exception.ApiException;
 import org.delivery.db.user.UserEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public class UserConverter {
 
     public UserEntity toEntity(UserRegisterRequest request) {
         return Optional.ofNullable(request)
-                .map(it ->{
+                .map(it -> {
                     return UserEntity.builder()
                             .name(request.getName())
                             .email(request.getEmail())
@@ -25,12 +24,12 @@ public class UserConverter {
                             .address(request.getAddress())
                             .build();
                 })
-                .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT, "UserRegisterRequest Null"));
+                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "UserRegisterRequest Null"));
     }
 
     public UserResponse toResponse(UserEntity userEntity) {
         return Optional.ofNullable(userEntity)
-                .map(it ->{
+                .map(it -> {
                     // to response
                     return UserResponse.builder()
                             .id(userEntity.getId())
@@ -43,6 +42,6 @@ public class UserConverter {
                             .lastLoginAt(userEntity.getLastLogin())
                             .build();
                 })
-                .orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT, "UserEntity Null"));
+                .orElseThrow(() -> new ApiException(ErrorCode.NULL_POINT, "UserEntity Null"));
     }
 }
