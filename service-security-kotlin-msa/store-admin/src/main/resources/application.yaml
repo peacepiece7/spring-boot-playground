@@ -1,0 +1,31 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: store-admin
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123!@#
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      format_sql: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:mysql://localhost:3306/delivery?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root1234!
+  thymeleaf:
+
+    enabled: true
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML

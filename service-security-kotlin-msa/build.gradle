@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
+
+    // 코틀린 설정 추가
+    id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+}
+
+// Specify Java 17
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// service 하위 모든 저장소는 maven 을 쓰겠다
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+// 빌드해도 jar 파일이 안떨어짐
+bootJar {
+    enabled = false
+}
+
+// jar 파일로 빌드하지 않음
+jar {
+    enabled = false
+}
