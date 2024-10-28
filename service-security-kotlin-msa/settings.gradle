@@ -13,4 +13,5 @@ include 'store-admin'
 include 'api:common'
 findProject(':api:common')?.name = 'common'
 include 'common'
+include 'account'
 
