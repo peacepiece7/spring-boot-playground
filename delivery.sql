@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS `delivery`.`store_menu` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 CREATE TABLE IF NOT EXISTS `delivery`.`user_order` (
   `id` BIGINT(32) NOT NULL AUTO_INCREMENT,
+  `store_id` BIGINT(32) NOT NULL,
   `user_id` BIGINT(32) NOT NULL,
   `status` VARCHAR(50) NOT NULL,
   `amount` DECIMAL(11,4) NOT NULL,
