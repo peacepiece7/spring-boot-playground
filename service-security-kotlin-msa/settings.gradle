@@ -10,8 +10,10 @@ rootProject.name = 'service'
 include 'api'
 include 'db'
 include 'store-admin'
-include 'api:common'
-findProject(':api:common')?.name = 'common'
 include 'common'
 include 'account'
+include 'apigw'
 
+// 이거 설정 출동날 수 있음
+// include 'api:common'
+// findProject(':api:common')?.name = 'common'
