@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/open-api/temp")
 class TempApiController {
 
-    @GetMapping("/")
+    @GetMapping("")
     fun temp(): String {
-        println("@@@ api temp @@@")
+        println("@@@@@@@@@ gateway test @@@@@@@@@@")
         return "Hello, kotlin!"
     }
 }

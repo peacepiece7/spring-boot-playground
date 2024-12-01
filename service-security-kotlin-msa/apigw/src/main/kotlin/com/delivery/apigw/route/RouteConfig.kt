@@ -2,6 +2,7 @@ package com.delivery.apigw.route
 
 import org.springframework.cloud.gateway.route.RouteLocator
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 // application.yaml 에 적어도 되고 설정이 많으면 여기다 적음 됨, 같이 쓸 수 있음
