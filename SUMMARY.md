@@ -1,0 +1,109 @@
+# SUMMARY
+
+## 개요
+- 여러 스프링/코틀린 하위 프로젝트를 모은 학습용 모노레포다.
+- 기능별 실습 프로젝트와 서비스 지향 프로젝트(`service-*`)가 섞여 있다.
+- 상세 문서는 루트 `README.md`와 각 하위 폴더의 `note.md`/`README.md`에 분산되어 있다.
+
+## 기능 쓰는 방법 (A)
+- AOP
+  - 개념: 횡단 관심사를 분리해 공통 로직을 주입한다.
+  - 구현: `@Aspect` + `@Pointcut` + Advice(`@Before/@After/@Around`) 구성.
+  - 주의점: 포인트컷 범위를 과도하게 잡지 않는다.
+  - 참고: `aop/note.md`, `README.md`.
+- Cookie/Session
+  - 개념: 쿠키는 클라이언트 저장, 세션은 서버 저장.
+  - 구현: `HttpServletRequest`로 쿠키 set/get, `HttpSession`으로 attribute 저장.
+  - 주의점: 멀티 서버 환경에서 세션 손실 → Redis 세션 클러스터링 또는 쿠키 인증 고려.
+  - 참고: `session/note.md`, `README.md`.
+- JWT
+  - 개념: header/payload/signature 기반 토큰(JWS).
+  - 구현: jjwt로 토큰 생성/검증.
+  - 주의점: secret key 보호, 만료 관리.
+  - 참고: `jwt-security/note.md`.
+- WebConfig/미들웨어
+  - 개념: Filter(서블릿) → Interceptor(MVC) → Resolver(컨트롤러 파라미터) 흐름.
+  - 구현: `WebConfig`에 Interceptor/Resolver 등록.
+  - 주의점: 인증/인가 위치와 순서를 명확히 정한다.
+  - 참고: `service-api/README.md`, `README.md`.
+- 멀티모듈
+  - 개념: `api`/`db` 모듈 분리.
+  - 구현: root `build.gradle`/`settings.gradle` 설정, `@EntityScan/@EnableJpaRepositories`.
+  - 주의점: 패키지 스캔 충돌(동일 패키지명 주의).
+  - 참고: `service-api/README.md`, `README.md`.
+- 커스텀 어노테이션
+  - 개념: 도메인 검증, 세션 주입, 빈 등록용 어노테이션 정의.
+  - 구현: annotation + validator, 또는 interceptor → resolver 흐름.
+  - 주의점: 세션 주입 흐름을 정확히 연결한다.
+  - 참고: `validation`, `yearly-idol-back`, `README.md`.
+- ObjectMapper
+  - 개념: JSON 직렬화/역직렬화 정책 통일.
+  - 구현: 모듈 등록, snake_case, FAIL_ON_UNKNOWN_PROPERTIES 설정.
+  - 주의점: 날짜 포맷/미지정 필드 처리 확인.
+  - 참고: `service-api/README.md`, `rest-api/NOTE.md`.
+- 예외 처리/Validation
+  - 개념: 공통 응답 포맷 + validation 에러 수집.
+  - 구현: `@RestControllerAdvice`, `@ExceptionHandler`, `@Order`.
+  - 주의점: 글로벌/도메인 예외 처리 우선순위.
+  - 참고: `rest-and-validation-exercise/note.md`, `rest-api/NOTE.md`, `README.md`.
+- JPA 관계/성능
+  - 개념: `@ManyToOne`/`@OneToMany`, 지연 로딩.
+  - 구현: 연관관계 매핑 및 필요 시 fetch 전략 조정.
+  - 주의점: LazyInitializationException/N+1 방지.
+  - 참고: `simple-board/note.md`, `simple-performance`.
+- Spring Security
+  - 개념: 인증/인가 프레임워크.
+  - 구현: `SecurityFilterChain`, `UserDetailsService`, `@AuthenticationPrincipal`.
+  - 주의점: CSRF 정책, 역할/상태 체크.
+  - 참고: `service-security/README.md`, `README.md`.
+- RabbitMQ
+  - 개념: 메시지 브로커(AMQP) 기반 비동기 통신.
+  - 구현: docker-compose로 브로커 실행, spring-amqp `Producer` 구성.
+  - 주의점: exchange/queue 설정, management 플러그인 활성화.
+  - 참고: `service-security-message/note.md`.
+- Docker-compose
+  - 개념: 로컬 인프라(MySQL/RabbitMQ) 실행.
+  - 구현: 각 프로젝트의 `docker-compose.yml` 사용.
+  - 주의점: 포트 충돌 및 컨테이너 관리.
+  - 참고: `docker-compose/README.md`, `service-security-message/note.md`, `README.md`.
+- SSE
+  - 개념: 서버 → 클라이언트 단방향 스트리밍.
+  - 구현: 스프링 기본 제공 기능 활용.
+  - 참고: `README.md`.
+
+## 개념 정리 (B)
+- API Gateway/라우팅: 경로 기반으로 서비스 라우팅·로드밸런싱·인증을 담당한다.
+- 세션 클러스터링: 멀티 서버 환경에서 Redis로 세션을 공유한다.
+- REST 매핑: `@RestController` + `@RequestMapping/@GetMapping`로 경로 바인딩.
+- ObjectMapper 동작: 직렬화는 `toString`, 역직렬화는 getter 기반.
+- Validation 기본: Jakarta Bean Validation의 내장 제약 사용.
+- JPA 상속/동등성: `@MappedSuperclass`, `equals/hashCode` 주의, `@SuperBuilder` 활용.
+- Kotlin 개요: JVM 기반, null 안정성/간결성, 컴파일 속도 고려.
+- Spring/Java 역사: Java/Spring 버전 흐름과 환경 선택 참고.
+
+## 프로젝트별 기능/목적 (C)
+- `aop`: AOP 어드바이스/포인트컷 샘플.
+- `cookie`: `HttpServletRequest` 기반 쿠키 set/get 예제.
+- `session`: `HttpSession` 기반 세션 처리와 클러스터링 개념.
+- `jwt-security`: JWT 생성/검증 샘플.
+- `docker-compose`: 로컬 DB/브로커 실행용 docker-compose 예제.
+- `interceptor`: 인터셉터 기반 전/후 처리 예제(문서 없음).
+- `jpa`: JPA 기본 매핑 예제(문서 없음).
+- `memorydb`: 메모리 저장소/리포지토리 패턴 연습(정렬/Optional 등 노트 포함).
+- `refactor-memory-db-to-mysql`: 메모리 DB 구현을 RDB로 리팩터링하는 실습.
+- `rest-api`: REST 매핑, ObjectMapper, 예외 처리, Validation 정리.
+- `rest-and-validation-exercise`: Validation 에러 응답 포맷 예제.
+- `validation`: 커스텀/기본 Validation 어노테이션 실습.
+- `simple-board`: 게시판 도메인 + JPA 연관관계/지연 로딩 이슈 기록.
+- `simple-board-erd.mwb`: 게시판 ERD 파일.
+- `simple-performance`: JPA SQL 직접 작성/성능 실험.
+- `service-api`: 배달 서비스 멀티모듈(`api`/`db`) + WebConfig/Resolver/Swagger.
+- `service-msa`: API Gateway/라우팅 개념 메모.
+- `service-security`: Spring Security + 관리자(Store Admin) + Thymeleaf.
+- `service-security-message`: RabbitMQ 기반 메시징 기능.
+- `service-security-kotlin`: Kotlin 기반 보안 샘플(노트는 공통 제약 위주).
+- `service-security-kotlin-msa`: Kotlin 기반 MSA/보안 예제(노트는 공통 제약 위주).
+- `kotlin-example`: Kotlin 개요 정리.
+- `spring`: Java/Spring 역사/버전 개요.
+- `yearly-idol-back`: 커스텀 어노테이션/Validator 예제 + 기능 TODO/시퀀스.
+- `untitled`: 실험/템플릿 용도(문서 없음).
